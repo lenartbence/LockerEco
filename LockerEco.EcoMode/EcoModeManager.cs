@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LockerEco.EcoMode
 {
-    public class EcoModeManager : IEcoModeManager
+    internal class EcoModeManager : IEcoModeManager
     {
         private ILockerSystemManager _lockerManager;
         private IList<Func<IEnumerable<LockerState>, Task>> _notificationListeners = new List<Func<IEnumerable<LockerState>, Task>>();
