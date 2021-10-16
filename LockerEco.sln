@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LockerEco.LockerManager", "LockerEco.LockerManager\LockerEco.LockerManager.csproj", "{684D517C-D658-4960-AE8A-C2A0FFB9EF1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LockerEco.EcoMode", "LockerEco.EcoMode\LockerEco.EcoMode.csproj", "{50E8F1BD-4873-40A8-96B3-D3DED1BA4D64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LockerEco.EcoMode", "LockerEco.EcoMode\LockerEco.EcoMode.csproj", "{50E8F1BD-4873-40A8-96B3-D3DED1BA4D64}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -5,6 +5,6 @@ namespace LockerEco.LockerManager.Notifications
 {
     interface IEmailService
     {
-        Task SaveLockerStates(IEnumerable<LockerState> lockerStates);
+        Task SendEmail(IEnumerable<LockerState> states);
     }
 }
