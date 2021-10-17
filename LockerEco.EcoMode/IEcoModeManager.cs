@@ -1,4 +1,5 @@
-﻿using LockerEco.LockerManager;
+﻿using LockerEco.EcoMode.Notifications;
+using LockerEco.LockerManager.Notifications;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ namespace LockerEco.EcoMode
 
         public Task TurnEcoModeOff();
 
-        public void RegisterNotificationListener(Func<IEnumerable<LockerState>, Task> listener);
+        public void RegisterNotificationListener(ILockerStateChangeNotifier listener);
+
+        public void RemoveNotificationListener(ILockerStateChangeNotifier listener);
     }
 }

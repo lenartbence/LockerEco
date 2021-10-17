@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace LockerEco.LockerManager.Notifications
 {
-    interface IBuildingManagementService
+    public interface IBuildingManagementService
     {
         Task ManagerLockerStateChanges(IEnumerable<LockerState> lockerStates);
     }

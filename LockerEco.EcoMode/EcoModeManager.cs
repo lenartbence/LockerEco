@@ -1,6 +1,7 @@
-﻿using LockerEco.LockerManager;
-using System;
+﻿using LockerEco.EcoMode.Notifications;
+using LockerEco.LockerManager;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LockerEco.EcoMode
@@ -8,7 +9,7 @@ namespace LockerEco.EcoMode
     internal class EcoModeManager : IEcoModeManager
     {
         private ILockerSystemManager _lockerManager;
-        private IList<Func<IEnumerable<LockerState>, Task>> _notificationListeners = new List<Func<IEnumerable<LockerState>, Task>>();
+        private List<ILockerStateChangeNotifier> _notificationListeners = new List<ILockerStateChangeNotifier>();
 
         public EcoModeManager(ILockerSystemManager lockerManager)
         {
@@ -18,26 +19,29 @@ namespace LockerEco.EcoMode
         public async Task TurnEcoModeOn()
         {
             IEnumerable<LockerState> result = await _lockerManager.SwitchEcoOn();
-            await NotifyNotificationListenersAsync(result);
+            await NotifyListenersAsync(result);
         }
 
         public async Task TurnEcoModeOff()
         {
             IEnumerable<LockerState> result = await _lockerManager.SwitchEcoOff();
-            await NotifyNotificationListenersAsync(result);
+            await NotifyListenersAsync(result);
         }
 
-        public void RegisterNotificationListener(Func<IEnumerable<LockerState>, Task> listener)
+        public void RegisterNotificationListener(ILockerStateChangeNotifier listener)
         {
             _notificationListeners.Add(listener);
         }
 
-        private async Task NotifyNotificationListenersAsync(IEnumerable<LockerState> states)
+        public void RemoveNotificationListener(ILockerStateChangeNotifier listener)
         {
-            foreach (var listener in _notificationListeners)
-            {
-                await listener(states);
-            }
+            _notificationListeners.Remove(listener);
+        }
+
+        private async Task NotifyListenersAsync(IEnumerable<LockerState> states)
+        {
+            IEnumerable<Task> tasks = _notificationListeners.Select(x => x.Notify(states));
+            await Task.WhenAll(tasks);
         }
     }
 }

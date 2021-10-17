@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace LockerEco.LockerManager.Notifications
 {
-    interface IDatabaseService
+    public interface IDatabaseService
     {
         Task SaveLockerStates(IEnumerable<LockerState> lockerStates);
     }
