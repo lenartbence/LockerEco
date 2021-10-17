@@ -1,7 +1,4 @@
 ﻿using LockerEco.EcoMode.Notifications;
-using LockerEco.LockerManager.Notifications;
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LockerEco.EcoMode

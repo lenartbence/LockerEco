@@ -1,5 +1,5 @@
 ﻿using LockerEco.LockerManager;
-using LockerEco.LockerManager.Notifications;
+using LockerEco.LockerManager.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

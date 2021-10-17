@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace LockerEco.LockerManager.Notifications
+namespace LockerEco.LockerManager.Services
 {
     public interface IEmailService
     {
