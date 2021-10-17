@@ -50,7 +50,7 @@ namespace LockerEco.EcoMode_uTest
             await _manager.TurnEcoModeOn();
 
             _lockerManagerMock.Verify(x => x.SwitchEcoOn(), Times.Once);
-            listenerMock.Verify(x => x.Notify(lockers));
+            listenerMock.Verify(x => x.Notify(lockers), Times.Once);
         }
 
         [Test]
@@ -66,7 +66,38 @@ namespace LockerEco.EcoMode_uTest
             await _manager.TurnEcoModeOff();
 
             _lockerManagerMock.Verify(x => x.SwitchEcoOff(), Times.Once);
-            listenerMock.Verify(x => x.Notify(lockers));
+            listenerMock.Verify(x => x.Notify(lockers), Times.Once);
+        }
+
+        [Test]
+        public async Task TurnEcoModeOff_WithDisabledListeners_NotificationsAreSentOnlyForActiveOnes()
+        {
+            var lockers = GetTestLockers(3, false);
+            _lockerManagerMock.Setup(x => x.SwitchEcoOff()).Returns(Task.FromResult(lockers));
+
+            var listenerMock = new Mock<ILockerStateChangeNotifier>();
+            listenerMock.Setup(x => x.Notify(It.IsAny<IEnumerable<LockerState>>())).Verifiable();
+
+            var disabledListenerMock = new Mock<ILockerStateChangeNotifier>();
+            disabledListenerMock.Setup(x => x.Notify(It.IsAny<IEnumerable<LockerState>>())).Verifiable();
+
+            _manager.RegisterNotificationListener(listenerMock.Object);
+            _manager.RegisterNotificationListener(disabledListenerMock.Object);
+            _manager.DisableNotificationListener(disabledListenerMock.Object);
+
+            await _manager.TurnEcoModeOff();
+
+            _lockerManagerMock.Verify(x => x.SwitchEcoOff(), Times.Once);
+            listenerMock.Verify(x => x.Notify(lockers), Times.Once);
+            disabledListenerMock.Verify(x => x.Notify(lockers), Times.Never);
+
+            _manager.EnableNotificationListener(disabledListenerMock.Object);
+
+            await _manager.TurnEcoModeOff();
+
+            _lockerManagerMock.Verify(x => x.SwitchEcoOff(), Times.Exactly(2));
+            listenerMock.Verify(x => x.Notify(lockers), Times.Exactly(2));
+            disabledListenerMock.Verify(x => x.Notify(lockers), Times.Once);
         }
 
         private IEnumerable<LockerState> GetTestLockers(int count, bool runsInEco)

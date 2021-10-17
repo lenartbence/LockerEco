@@ -14,5 +14,9 @@ namespace LockerEco.EcoMode
         public void RemoveNotificationListener(ILockerStateChangeNotifier listener);
 
         public void ClearNotificationListeners();
+
+        public void EnableNotificationListener(ILockerStateChangeNotifier listener);
+
+        public void DisableNotificationListener(ILockerStateChangeNotifier listener);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using LockerEco.EcoMode.Notifications;
 using LockerEco.LockerManager;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace LockerEco.EcoMode
     internal class EcoModeManager : IEcoModeManager
     {
         private ILockerSystemManager _lockerManager;
-        private List<ILockerStateChangeNotifier> _notificationListeners = new List<ILockerStateChangeNotifier>();
+        private Dictionary<ILockerStateChangeNotifier, NotificationListenerState> _notificationListeners = new Dictionary<ILockerStateChangeNotifier, NotificationListenerState>();
 
         public EcoModeManager(ILockerSystemManager lockerManager)
         {
@@ -30,7 +31,7 @@ namespace LockerEco.EcoMode
 
         public void RegisterNotificationListener(ILockerStateChangeNotifier listener)
         {
-            _notificationListeners.Add(listener);
+            _notificationListeners.Add(listener, NotificationListenerState.Enabled);
         }
 
         public void RemoveNotificationListener(ILockerStateChangeNotifier listener)
@@ -43,9 +44,31 @@ namespace LockerEco.EcoMode
             _notificationListeners.Clear();
         }
 
+        public void EnableNotificationListener(ILockerStateChangeNotifier listener)
+        {
+            if(!_notificationListeners.ContainsKey(listener))
+            {
+                throw new InvalidOperationException("The passed listener is not registered therefore no state change is possible.");
+            }
+
+            _notificationListeners[listener] = NotificationListenerState.Enabled;
+        }
+
+        public void DisableNotificationListener(ILockerStateChangeNotifier listener)
+        {
+            if (!_notificationListeners.ContainsKey(listener))
+            {
+                throw new InvalidOperationException("The passed listener is not registered therefore no state change is possible.");
+            }
+
+            _notificationListeners[listener] = NotificationListenerState.Disabled;
+        }
+
         private async Task NotifyListenersAsync(IEnumerable<LockerState> states)
         {
-            IEnumerable<Task> tasks = _notificationListeners.Select(x => x.Notify(states));
+            IEnumerable<Task> tasks = _notificationListeners.Where(x => x.Value == NotificationListenerState.Enabled)
+                                                            .Select(x => x.Key.Notify(states));
+
             await Task.WhenAll(tasks);
         }
     }
