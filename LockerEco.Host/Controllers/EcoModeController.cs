@@ -23,7 +23,10 @@ namespace LockerEco.Host.Controllers
             _ecoModeManager.RegisterNotificationListener(new EmailListenerAdapter(emailService));
             _ecoModeManager.RegisterNotificationListener(new DatabaseListenerAdapter(databaseService));
             _ecoModeManager.RegisterNotificationListener(new BuildingManagementListenerAdapter(buildingManagementService));
-            _ecoModeManager.RegisterNotificationListener(new EmailListenerAdapter(emailService));
+
+            var disabledListener = new EmailListenerAdapter(emailService);
+            _ecoModeManager.RegisterNotificationListener(disabledListener);
+            _ecoModeManager.DisableNotificationListener(disabledListener);
         }
 
         [HttpGet("on")]
