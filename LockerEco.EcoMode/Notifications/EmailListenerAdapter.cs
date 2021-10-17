@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LockerEco.EcoMode.Notifications
 {
-    internal class EmailListenerAdapter : ILockerStateChangeNotifier
+    public class EmailListenerAdapter : ILockerStateChangeNotifier
     {
         private IEmailService _service;
 

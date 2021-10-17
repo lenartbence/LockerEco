@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LockerEco.EcoMode.Notifications
 {
-    internal class DatabaseListenerAdapter : ILockerStateChangeNotifier
+    public class DatabaseListenerAdapter : ILockerStateChangeNotifier
     {
         private IDatabaseService _service;
 

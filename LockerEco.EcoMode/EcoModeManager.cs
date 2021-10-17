@@ -38,6 +38,11 @@ namespace LockerEco.EcoMode
             _notificationListeners.Remove(listener);
         }
 
+        public void ClearNotificationListeners()
+        {
+            _notificationListeners.Clear();
+        }
+
         private async Task NotifyListenersAsync(IEnumerable<LockerState> states)
         {
             IEnumerable<Task> tasks = _notificationListeners.Select(x => x.Notify(states));

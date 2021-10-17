@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LockerEco.EcoMode.Notifications
 {
-    internal class BuildingManagementListenerAdapter : ILockerStateChangeNotifier
+    public class BuildingManagementListenerAdapter : ILockerStateChangeNotifier
     {
         private IBuildingManagementService _service;
 
